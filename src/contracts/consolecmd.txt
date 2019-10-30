@@ -1,0 +1,12 @@
+addluggage2 = await addLuggage2.deployed()
+ac = await web3.eth.getAccounts()
+addluggage2.createAsset("123", 123, "Bangalore")
+addluggage2.isOwnerOf("Bangalore", "123")
+addluggage2.sendAsset("Bangalore", "Chennai", "123")
+addluggage2.isOwnerOf("Chennai", "123")
+addluggage2.receiveAsset("Bangalore", "Chennai", "123")
+addluggage2.isOwnerOf("Chennai", "123")
+addluggage2.trackLuggage("123")
+addluggage2.locateMyLuggage("123")
+
+addluggage2.sendAsset("Chennai", "Mumbai", "123")
