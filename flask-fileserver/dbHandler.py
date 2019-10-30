@@ -13,7 +13,8 @@ def checkLogin(username,password1):
 	cur.execute("SELECT username, password1,email FROM users where username=? and password1=?",(username,password1))
 	users = cur.fetchall()
 	con.close()
+	print(users)
 	if len(users) == 0:
 		return False
 	else:
-		return True
+		return users[0][0]

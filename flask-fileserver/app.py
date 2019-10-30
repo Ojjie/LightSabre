@@ -1,9 +1,11 @@
 from flask import Flask, request, render_template, send_from_directory, session, url_for, redirect, jsonify
 from flask_cors import CORS, cross_origin
 import dbHandler as dbHandler
+import sys
 
 app = Flask(__name__)
 CORS(app, support_credentials=True)
+app.secret_key = "Secret key don't share pls"
 
 @app.route("/addUUID/<uuid>")
 @cross_origin(supports_credentials=True)
@@ -39,7 +41,7 @@ def index():
 
 @app.route("/1")
 def index1():
-    return render_template("mainpage1.html")
+    return render_template("mainpage1.html", username=session["user"])
 
 # @app.route("/login")
 # def login():
@@ -53,6 +55,7 @@ def login():
         # dbHandler.insertUser(username, password1,email)	
         login = dbHandler.checkLogin(username, password1)
         if(login):
+            session["user"] = login
             return redirect(url_for("index1"))
         else:
             return render_template("login.html")
