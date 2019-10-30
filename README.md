@@ -23,3 +23,4 @@
    - Python 3.6+
    - Flask 1.0.2
    - SQLite3 (installed by default in Python3)
+   - virtualenv or conda
