@@ -37,8 +37,9 @@ class Main extends Component {
             const airport_initial = this.luggageAirport.value
             const user = this.user.value
             const uuid = this.uuidv4()
+            const seconds = new Date()
             this.addUUIDtoDB(uuid, user)
-            this.props.addLuggage(uuid, weight, airport_initial)
+            this.props.addLuggage(uuid, weight, airport_initial, seconds)
         }}>
           <div className="form-group mr-sm-2">
             <input
@@ -110,7 +111,8 @@ class Main extends Component {
             .then((text) => {
                 console.log(text, text == "true\n")
                 if (text == "true\n") {
-                    this.props.sendLuggage(airport_from, airport_to, uuid)
+                    const seconds = new Date()
+                    this.props.sendLuggage(airport_from, airport_to, uuid, seconds)
                 }
             })
         }}>Send Luggage</button>
@@ -161,7 +163,8 @@ class Main extends Component {
             .then((text) => {
                 console.log(text, text == "true\n")
                 if (text == "true\n") {
-                    this.props.receiveLuggage(airport_from, airport_to, uuid)
+                    const seconds = new Date()
+                    this.props.receiveLuggage(airport_from, airport_to, uuid, seconds)
                 }
             })
         }}>Receive Luggage</button>

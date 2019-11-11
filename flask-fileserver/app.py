@@ -3,6 +3,7 @@ from flask_cors import CORS, cross_origin
 import dbHandler as dbHandler
 import sys
 import datetime
+import dateutil.parser
 
 import json
 from web3 import Web3, HTTPProvider
@@ -19,7 +20,7 @@ bytecode = truffleFile['bytecode']
 
 w3 = Web3(HTTPProvider("http://127.0.0.1:7545"))
 print(w3.isConnected())
-contract_address = Web3.toChecksumAddress("0x31F416460D0EA0116138719D2defABF8b167137D")
+contract_address = Web3.toChecksumAddress("0x55aa6C459A2d27723dc24f0ffC35AF31E1145309")
 
 contract_instance = w3.eth.contract(abi=abi, address=contract_address)
 #########
@@ -123,6 +124,9 @@ def locateLuggage():
         if "uuid" in request.form:
             uuid = request.form["uuid"]
             output = contract_instance.functions.locateMyLuggage(uuid).call()
+            o = output.split(" ")
+            o[-1] = ": " + dateutil.parser.parse(o[-1]).strftime("%I:%M:%S %p, %-d %b %Y")
+            output = " ".join(o)
             return render_template("locate.html", output=output, uuids=uuids)
     else:
         return render_template("locate.html", uuids=uuids)
@@ -135,7 +139,12 @@ def trackLuggage():
         if "uuid" in request.form:
             uuid = request.form["uuid"]
             output = contract_instance.functions.trackLuggage(uuid).call()
+            print(output)
             output = output[0].split("\n")[:-1]
+            for i in range(len(output)):
+                o = output[i].split(" ")
+                o[-1] = "::" + dateutil.parser.parse(o[-1]).strftime("%I:%M:%S %p, %-d %b %Y")
+                output[i] = " ".join(o)
             print(output)
             return render_template("track.html", output=output, uuids=uuids)
     else:
