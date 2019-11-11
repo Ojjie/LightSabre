@@ -1,0 +1,21 @@
+<form action="/locate" method="POST">
+    <h1>Track and Locate Luggage</h1>
+    <!-- <input
+    name="uuid"
+    id="uuid_locate"
+    type="text"
+    className="form-control"
+    placeholder="Enter UUID to locate luggage"
+    required /><br /> -->
+    <select name="uuid">
+        {% for uuid in uuids %}
+            <option value="{{ uuid }}">{{ uuid }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit" className="btn btn-primary">Locate</button>
+</form>
+
+{% if output %}
+    <h1>Luggage Info</h1>
+    <h3>{{ output }}</h3>
+{% endif %}

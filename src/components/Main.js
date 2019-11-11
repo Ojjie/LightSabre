@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+// import Cookies from 'universal-cookie';
 
 class Main extends Component {
 
@@ -10,7 +10,8 @@ class Main extends Component {
   }
 
 
-  addUUIDtoDB(uuid) {
+  addUUIDtoDB(uuid, user) {
+    // const cookies = new Cookies();
     // create a new XMLHttpRequest
     var xhr = new XMLHttpRequest()
 
@@ -20,9 +21,11 @@ class Main extends Component {
       console.log(xhr.responseText)
     })
     // open the request with the verb and the url
-    xhr.open('GET', 'http://localhost:5000/addUUID/' + uuid)
+    xhr.open('POST', 'http://localhost:5000/addUUID/' + uuid)
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     // send the request
-    xhr.send()
+    // console.log("User cookie: " + cookies.get("user"))
+    xhr.send("user=" + user)
   }
 
   render() {
@@ -32,10 +35,20 @@ class Main extends Component {
         <form onSubmit={(event) => {
             const weight = this.luggageWeight.value
             const airport_initial = this.luggageAirport.value
+            const user = this.user.value
             const uuid = this.uuidv4()
-            this.addUUIDtoDB(uuid)
+            this.addUUIDtoDB(uuid, user)
             this.props.addLuggage(uuid, weight, airport_initial)
         }}>
+          <div className="form-group mr-sm-2">
+            <input
+              id="username"
+              type="text"
+              ref={(input) => { this.user = input }}
+              className="form-control"
+              placeholder="Username"
+              required />
+          </div>
           <div className="form-group mr-sm-2">
             <input
               id="luggageWeight"

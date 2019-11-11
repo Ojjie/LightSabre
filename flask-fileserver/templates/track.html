@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="/static/trackstyle.css">
+</head>
+<body>
+    <form action="/track" method="POST">
+        <h1>Track and Locate Luggage</h1>
+        <select name="uuid">
+            {% for uuid in uuids %}
+                <option value="{{ uuid }}">{{ uuid }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" className="btn btn-primary">Track</button>
+    </form>
+
+    {% if output %}
+        <h1>Luggage Info</h1>
+        <ol class="progtrckr" data-progtrckr-steps="{{ output|length }}">
+            {% for line in output %}
+                <li class="progtrckr-done">{{ line }}</li>
+            {% endfor %}
+        </ol>
+    {% endif %}
+</body>
+</html>

@@ -162,7 +162,7 @@ class App extends Component {
                 ? <div id="loader" className="text-center"><p className="text-center">Loading...</p></div>
                 : <Main addLuggage={this.addLuggage} sendLuggage={this.sendLuggage} receiveLuggage={this.receiveLuggage} add_msg={this.state.add_msg} send_msg={this.state.send_msg} receive_msg={this.state.receive_msg} luggages={this.state.luggages} />
               }
-              <form style={{paddingLeft: '30px'}}>
+              {/* <form style={{paddingLeft: '30px'}}>
                     <h1>Track and Locate Luggage</h1>
                     <input
                     id="uuid_locate"
@@ -173,7 +173,7 @@ class App extends Component {
                     required /><br />
                     <button type="button" className="btn btn-primary" onClick={() => this.locatemyLuggage(this.uuid_locate.value)}>Locate</button>&nbsp;
                     <button type="button" className="btn btn-primary" onClick={() => this.trackLuggage(this.uuid_locate.value)}>Track</button>
-              </form>
+              </form> */}
           </div>
         </div>
       </div>
