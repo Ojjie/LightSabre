@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <ol class="progtrckr" data-progtrckr-steps="7">
+        <!--<li class="progtrckr-done">insert location</li>
+        <li class="progtrckr-done"></li>
+        <li class="progtrckr-done">insert location</li>
+        <li class="progtrckr-done">insert location</li>
+        <li class="progtrckr-done">insert location</li>
+        <li class="progtrckr-done">insert location</li>
+        <li class="progtrckr-done">insert location</li>-->
+  
+    </ol>
+    <script type="text/javascript">
+        var i;
+        var c=5; // add number of output lines
+        for(i=0;i<c;i++){
+            var ele=document.createElement("li");
+            var text=document.createTextNode("location")   // add location 
+            ele.appendChild(text);
+            ele.setAttribute("class","progtrckr-done");
+            document.getElementsByClassName("progtrckr")[0].appendChild(ele);
+        }
+    </script>
+</body>
+</html>

@@ -15,12 +15,13 @@
                     <li><a class="smoothscroll" href="#features">Features</a></li>
                     <li><a class="smoothscroll" href="#contact">Contact</a></li>
                     <li><a class="smoothscroll">{{ session["user"] }}</a></li>
+                    <li><a class="smoothscroll" href="{{ url_for('logout') }}">Logout</a></li>
                   </ul>
                 </nav>
               </div>
               <div class="row hero">
                 <div class="eight columns">
-                  <h1 class="header">Light Saber.</h1>
+                  <h1 class="header">Light Sabre.</h1>
                   <h2 class="subheader">A secure, decentralized lugagge tracking service built on the Ethereum platform.</h2>
                   <p class="paragraph"> Can be deployed between airlines, airports and ensures no loss of luggage.</p>
                   <a href="#"><img src="https://jeffbredenkamp.neocities.org/app-store-badge.png" class="appstorebutton btn" alt="Download on Apple Store"></a> <a href="#"><img src="https://jeffbredenkamp.neocities.org/google-play-badge.png" class="appstorebutton btn" alt="Download on Google Play"></a> </div>
@@ -91,14 +92,14 @@
                   </div>
                   <div class="row">
                     <div class="nine columns">
-                      <h2><a href="http://localhost:3000">Locate my Luggage</a></h2>
+                      <h2><a href="{{ url_for('locateLuggage') }}">Locate my Luggage</a></h2>
                       <p> Track which airport the luggage is at, all in real time!</p>
                     </div>
                     <div class="three columns"> <span class="typcn typcn-battery-high icon"></span> </div>
                   </div>
                   <div class="row">
                     <div class="nine columns">
-                      <h2><a href="http://localhost:3000">Track History</a></h2>
+                      <h2><a href="{{ url_for('trackLuggage') }}">Track History</a></h2>
                       <p> Get a crisp list of the airports to which the luggage has been received at and sent from</p>
                     </div>
                     <div class="three columns"> <span class="typcn typcn-flash-outline icon"></span> </div>

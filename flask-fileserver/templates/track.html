@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lightsabre - Track Luggage</title>
+    <link rel="stylesheet" type="text/css" href="/static/trackstyle.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body style="background-image: url(/static/track_bg.jpg);background-size: cover;">
+    <form action="/track" method="POST">
+        <h1 style="padding-left: 10px;">Track Luggage</h1>
+        <div class="form-group">
+            <label style="padding-left: 10px;" for="sel1">Select UUID:</label>
+            <select name="uuid" class="form-control" id="sel1" style="display: inline-block;width: 70%;">
+                {% for uuid in uuids %}
+                    <option value="{{ uuid }}">{{ uuid }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-primary" style="display: inline-block;width: 18%;">Track</button>
+        </div>
+    </form>
+
+    {% if output %}
+        <h1 style="padding-left: 10px;">Luggage Info</h1>
+        <ol style="padding-left: 10px;" class="progtrckr" data-progtrckr-steps="{{ output|length }}">
+            {% for line in output %}
+                <li class="progtrckr-done"><span style="position: relative;top: 50px;">{{ line.split("::")[0] }}<br>{{ line.split("::")[1] }}</span></li>
+            {% endfor %}
+        </ol>
+    {% endif %}
+</body>
+</html>

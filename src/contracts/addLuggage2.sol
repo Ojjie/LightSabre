@@ -14,8 +14,10 @@ contract addLuggage2{
     struct sentreceived {
         bool sent;
         string airport_sent;
+        string timestamp_sent;
         bool received;
         string airport_received;
+        string timestamp_received;
     }
 
     event AssetCreate(string account, string uuid, uint weight);
@@ -23,7 +25,7 @@ contract addLuggage2{
     event AssetTransfer(string from, string to, string uuid);
     event RejectTransfer(string from, string to, string uuid, string message);
 
-    function createAsset(string memory _uuid, uint _weight, string memory _airport_initial) public {
+    function createAsset(string memory _uuid, uint _weight, string memory _airport_initial, string memory _timestamp) public {
 
         // Require valid _uuid
         require(bytes(_uuid).length>0, "Invalid uuid");
@@ -41,11 +43,12 @@ contract addLuggage2{
         sentreceived memory a;
         a.sent = false;
         a.received = true;
+        a.timestamp_received = _timestamp;
         walletStore[_airport_initial][_uuid] = a;
         emit AssetCreate(_airport_initial, _uuid, _weight);
     }
-    
-    function sendAsset(string memory _airport_from, string memory _airport_to, string memory _uuid) public {
+
+    function sendAsset(string memory _airport_from, string memory _airport_to, string memory _uuid, string memory _timestamp) public {
         // Require valid _airport_from
         require(bytes(_airport_from).length>0,"Invalid source airport");
         // Require valid _airport_to
@@ -67,11 +70,12 @@ contract addLuggage2{
         }
         walletStore[_airport_from][_uuid].sent = true;
         walletStore[_airport_from][_uuid].airport_sent = _airport_to;
+        walletStore[_airport_from][_uuid].timestamp_sent = _timestamp;
         // walletStore[to][_uuid] = true;
         emit AssetTransfer(_airport_from, _airport_to, _uuid);
     }
 
-    function receiveAsset(string memory _airport_from, string memory _airport_to, string memory _uuid) public {
+    function receiveAsset(string memory _airport_from, string memory _airport_to, string memory _uuid, string memory _timestamp) public {
         // Require valid _airport_from
         require(bytes(_airport_from).length>0,"Invalid source airport");
         // Require valid _airport_to
@@ -93,6 +97,7 @@ contract addLuggage2{
         }
         walletStore[_airport_to][_uuid].received = true;
         walletStore[_airport_to][_uuid].airport_received = _airport_from;
+        walletStore[_airport_to][_uuid].timestamp_received = _timestamp;
         // walletStore[to][_uuid] = true;
         emit AssetTransfer(_airport_from, _airport_to, _uuid);
     }
@@ -101,8 +106,8 @@ contract addLuggage2{
         return (luggageStore[_uuid].weight, luggageStore[_uuid].airport_initial);
     }
 
-    function getWalletStore(string memory _airport, string memory _uuid) public view returns (bool, string memory, bool, string memory) {
-        return (walletStore[_airport][_uuid].sent, walletStore[_airport][_uuid].airport_sent, walletStore[_airport][_uuid].received, walletStore[_airport][_uuid].airport_received);
+    function getWalletStore(string memory _airport, string memory _uuid) public view returns (bool, string memory, bool, string memory, string memory, string memory) {
+        return (walletStore[_airport][_uuid].sent, walletStore[_airport][_uuid].airport_sent, walletStore[_airport][_uuid].received, walletStore[_airport][_uuid].airport_received, walletStore[_airport][_uuid].timestamp_sent, walletStore[_airport][_uuid].airport_received);
     }
 
     function isOwnerOf(string memory _owner, string memory _uuid) public view returns (bool) {
@@ -112,8 +117,8 @@ contract addLuggage2{
         return false;
     }
 
-    function append(string memory a, string memory b, string memory c, string memory d, string memory e, string memory f) internal pure returns (string memory) {
-        return string(abi.encodePacked(a, b, c, d, e, f));
+    function append(string memory a, string memory b, string memory c, string memory d, string memory e, string memory f, string memory g, string memory h) internal pure returns (string memory) {
+        return string(abi.encodePacked(a, b, c, d, e, f, g, h));
     }
 
     function trackLuggage(string memory _uuid) public view returns (string memory, string memory)  {
@@ -121,14 +126,14 @@ contract addLuggage2{
         string memory output = "";
         string memory temp_output = "";
         sentreceived memory cur_sr = walletStore[luggageStore[_uuid].airport_initial][_uuid];
-        temp_output = append("", "Luggage received at ",cur_airport,"","","\n");
-        output = append(output, temp_output, "", "", "", "");
+        temp_output = append("", "", "Luggage received at ",cur_airport," ",cur_sr.timestamp_received, "","\n");
+        output = append(output, temp_output, "", "", "", "", "", "");
         while(cur_sr.sent) {
-            temp_output = append("", "Luggage sent from ",cur_airport," to ",cur_sr.airport_sent,"\n");
-            output = append(output, temp_output, "", "", "", "");
+            temp_output = append("", "Luggage sent from ",cur_airport," to ",cur_sr.airport_sent, " ", cur_sr.timestamp_sent,"\n");
+            output = append(output, temp_output, "", "", "", "", "", "");
             if(walletStore[cur_sr.airport_sent][_uuid].received) {
-                temp_output = append("", "Luggage received at ",cur_sr.airport_sent," from ",walletStore[cur_sr.airport_sent][_uuid].airport_received,"\n");
-                output = append(output, temp_output, "", "", "", "");
+                temp_output = append("", "Luggage received at ",cur_sr.airport_sent," from ",walletStore[cur_sr.airport_sent][_uuid].airport_received, " ", walletStore[cur_sr.airport_sent][_uuid].timestamp_received,"\n");
+                output = append(output, temp_output, "", "", "", "", "", "");
             }
             cur_airport = cur_sr.airport_sent;
             cur_sr = walletStore[cur_airport][_uuid];
